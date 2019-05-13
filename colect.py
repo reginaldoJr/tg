@@ -1,20 +1,20 @@
 import csv
 from itertools import islice
 from imdb import IMDb,IMDbError
+import pandas as pd
+import numpy as np
+
+data1 = pd.read_csv('teste.csv')
+data2 = pd.read_csv('./dt_small/movies.csv')
+df1 = data1[['movieId','synopsis']]
+df2 = data2[['movieId','title']]
+dfm = pd.merge(df1, df2, left_on='movieId', right_on='movieId')
+print(dfm.head())
+exit()
 
 # create an instance of the IMDb class
 ia = IMDb()
 
-# get a movie
-#movie = ia.search_movie('Grumpier Old Men (1995)')
-#movie = ia.get_movie(movie[0].movieID)
-#print(movie.keys())
-#if 'plot outline' in movie.keys():
-#	print('Esta na lista')
-#else:
-#	print('Não esta na lista')
-
-#exit()
 data = []
 with open('./dt_small/movies.csv', mode='r') as csv_file:
 		csv_reader = csv.DictReader(csv_file)
