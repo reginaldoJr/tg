@@ -62,7 +62,7 @@ def filmes(id=-1,nome='NULL'):
     for name in vec:
         print('Similares ',df.loc[df['title']==name[0],['title']],'=', name[1])
 
-print(filmes(1))
+#print(filmes(1))
 #print(filmes(nome="Harry Potter and the Philosopher's Stone"))
 
-#print(pearsonr(model.docvecs[13862], model.docvecs[12775]))
+print(pearsonr(model.docvecs[13862], model.docvecs[12775]))

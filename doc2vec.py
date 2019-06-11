@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import collections
 
 import gensim
 from gensim.models import Doc2Vec
@@ -10,7 +11,7 @@ from nltk.tokenize import word_tokenize
 cores = multiprocessing.cpu_count()
 assert gensim.models.doc2vec.FAST_VERSION > -1
 
-df = pd.read_csv("D:\Documentos\Movie\movielens\ResultadoFinal.csv")
+df = pd.read_csv("./ResultadoFinal.csv")
 df.rename(columns={'text':'plot'}, inplace=True)
 
 df['plot']=df['plot'].astype(str)
@@ -48,4 +49,19 @@ def filmes(id=-1,nome='NULL'):
     for name in vec:
         print('Similares ',df.loc[df['id']==name[0],['title', 'genres']],'=', name[1])
 
-print(filmes(3574))
+
+users = pd.read_csv('./dt_small/ratings.csv')
+users = users[users["rating"]>=3.5]
+counter=collections.Counter(users['userId'])
+users['count_r']=0
+print(users.shape)
+for x in users.index:
+        users.loc[x,'count_r'] = counter[users.loc[x,'userId']]
+        if x>100:
+            break
+
+users = users[users["count_r"]>=100]
+for x in users.index:
+    print(users.loc[x]['movieId']," :", df.loc[ df['movieId']== users.loc[x]['movieId']]['id'])
+    filmes(int (df.loc[ df['movieId']== users.loc[x]['movieId']].id))
+    break
